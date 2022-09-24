@@ -1,5 +1,6 @@
 import ReportsRepository from "../Repositories/ReportsRepository";
 import Report from "../Report";
+import { SimplePaginatorContract } from "@ioc:Adonis/Lucid/Database";
 
 export default class GetAllReports{
 
@@ -9,8 +10,8 @@ export default class GetAllReports{
         this.reportsRepository = reportsRepository;
     }
 
-    public async Invoke():Promise<Report[]>{
-        let reports:Report[] = await this.reportsRepository.getAllReports();
+    public async Invoke(page = 1, limit = 10):Promise<SimplePaginatorContract<Report>>{
+        let reports = await this.reportsRepository.getAllReports(page, limit);
         return reports
     }
 }

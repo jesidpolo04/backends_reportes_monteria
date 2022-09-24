@@ -19,7 +19,7 @@ export default Env.rules({
 	PORT: Env.schema.number(),
 	APP_KEY: Env.schema.string(),
 	APP_NAME: Env.schema.string(),
-  DRIVE_DISK: Env.schema.enum(['local'] as const),
+  	DRIVE_DISK: Env.schema.enum(['local'] as const),
 	NODE_ENV: Env.schema.enum(['development', 'production', 'test'] as const),
 	
 	PG_HOST: Env.schema.string({ format: 'host' }),
@@ -27,4 +27,6 @@ export default Env.rules({
     PG_USER: Env.schema.string(),
     PG_PASSWORD: Env.schema.string.optional(),
     PG_DB_NAME: Env.schema.string(),
+
+	JWT_SECRET: Env.schema.string()
 })

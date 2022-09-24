@@ -8,6 +8,7 @@ export default class CreateReportDto{
     public longitude: number
     public description: string
     public email: string
+    public user_document: string
 
     public setDtoFromRequest(request:any):void{
         this.type = request.type
@@ -17,6 +18,7 @@ export default class CreateReportDto{
         this.longitude = request.longitude
         this.description = request.description
         this.email = request.email 
+        this.user_document = request.user_document
     }
 
     public getReportFromDto():Report{
@@ -26,7 +28,9 @@ export default class CreateReportDto{
         report.reference = this.reference;
         report.latitude = this.latitude;
         report.longitude = this.longitude;
+        report.description = this.description;
         report.email = this.email;
+        report.userDocument = this.user_document;
 
         return report;
     }

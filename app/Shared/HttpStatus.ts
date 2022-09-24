@@ -1,0 +1,9 @@
+const HTTP_RESPONSE_CODES = {
+    BAD_REQUEST: 400,
+    OK: 200,
+    CREATED: 201,
+    UNAUTHORIZED: 401,
+    SERVER_ERROR: 500
+}
+
+export default HTTP_RESPONSE_CODES

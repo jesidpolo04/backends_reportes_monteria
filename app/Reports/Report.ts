@@ -32,6 +32,9 @@ export default class Report extends BaseModel {
     @column()
     public images: string
 
+    @column()
+    public userDocument: string
+
     @column.dateTime({ autoCreate: true, columnName: 'created_at' })
     public createdAt: DateTime
 

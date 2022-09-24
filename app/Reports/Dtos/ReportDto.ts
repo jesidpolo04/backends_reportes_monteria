@@ -16,13 +16,12 @@ export default class ReportDto{
     ]
 
     public getDtoFromEntity(report:Report){
-        
         this.id = report.id
         this.type = report.type
         this.address = report.address
         this.reference = report.reference
-        this.latitude = report.latitude
-        this.longitude = report.longitude
+        this.latitude = parseFloat(report.latitude.toString()) 
+        this.longitude = parseFloat(report.longitude.toString())
         this.description = report.description
         this.email = report.email
     }

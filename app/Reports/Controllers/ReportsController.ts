@@ -1,4 +1,5 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { SimplePaginatorContract } from '@ioc:Adonis/Lucid/Database';
 import CreateReportDto from '../Dtos/CreateReportDto';
 import ReportDto from '../Dtos/ReportDto';
 import Report from '../Report';
@@ -15,14 +16,21 @@ export default class ReportController {
     }
 
     public async getAll(ctx: HttpContextContract){
+        const queryParams = ctx.request.qs()
+        const page = queryParams["page"]
+        const limit = queryParams["limit"]
         const getAllReports:GetAllReports = new GetAllReports(this.reportsRepository);
-        const reports:Report[] = await getAllReports.Invoke();
-        let reportsDto:ReportDto[] = reports.map(report =>{
+        const paginator:SimplePaginatorContract<Report> = await getAllReports.Invoke(page, limit);
+        const reports:Report[] = paginator.all();
+        const reportsDto:ReportDto[] = reports.map(report =>{
             let reportDto = new ReportDto()
             reportDto.getDtoFromEntity(report)
             return reportDto
         })
-        ctx.response.status(200).send(reportsDto)
+        ctx.response.status(200).send({
+            paginator: paginator.getMeta(),
+            reports: reportsDto
+        })
     }
 
     public async create(ctx: HttpContextContract){

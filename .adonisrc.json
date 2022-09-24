@@ -20,7 +20,10 @@
     "./start/routes",
     "./start/kernel",
     "./app/Reports/ReportsRoutes",
-    "./app/ReportTypes/ReportTypesRoutes"
+    "./app/ReportTypes/ReportTypesRoutes",
+    "./app/Auth/ApiKeys/ApiKeysRoutes",
+    "./app/Interactions/InteractionTypes/InteractionTypesRoutes",
+    "./app/Users/UsersRoutes"
   ],
   "providers": [
     "./providers/AppProvider",
