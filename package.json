@@ -38,6 +38,7 @@
     "@types/bcrypt": "^5.0.0",
     "@types/jsonwebtoken": "^8.5.8",
     "accesscontrol": "^2.2.1",
+    "adonis5-swagger": "^1.4.1",
     "bcrypt": "^5.0.1",
     "generate-api-key": "^1.0.0",
     "jsonwebtoken": "^8.5.1",
