@@ -9,7 +9,7 @@ const reportSchema = schema.create({
   description: schema.string(),
   email: schema.string(undefined, [rules.email()]),
   user_document: schema.string({trim: true}, [rules.minLength(6)]),
-  images: schema.array.optional([rules.minLength(1)]).members(schema.file({extnames: ['jpg', 'png', 'jpeg']})),
+  images: schema.array([rules.minLength(1)]).members(schema.file({extnames: ['jpg', 'png', 'jpeg']})),
 })
 
 export {reportSchema};
