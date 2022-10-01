@@ -4,7 +4,7 @@ export default class CreateApiKeyResponse{
     
     public api_key
 
-    public setDtoFromApiKey(apiKey:ApiKey){
+    public constructor(apiKey:ApiKey){
         this.api_key = apiKey.key
     }
 }

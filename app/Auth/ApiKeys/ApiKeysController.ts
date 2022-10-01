@@ -14,14 +14,12 @@ export default class ApiKeyController{
         await this.repository.getApiKey('123');
         context.response.status(200).send({ok:"ok"})
     }
-    public async createKey(context:HttpContextContract){
-        const request = context.request.all()
-        const createApiKeyRequest:CreateApiKeyRequest = new CreateApiKeyRequest()
-        createApiKeyRequest.setDtoFromRequest(request);
-        const createApiKey:CreateApiKey = new CreateApiKey(this.repository)
-        const apiKey:ApiKey = await createApiKey.Invoke(createApiKeyRequest)
-        const createApiKeyResponse = new CreateApiKeyResponse()
-        createApiKeyResponse.setDtoFromApiKey(apiKey)
-        context.response.status(201).send(createApiKeyResponse)
+    public async createKey({request, response}:HttpContextContract){
+        const requestBody = request.all()
+        const application = requestBody.application
+        const useCase:CreateApiKey = new CreateApiKey(this.repository)
+        const apiKey:ApiKey = await useCase.Invoke(application)
+        const createApiKeyResponse = new CreateApiKeyResponse(apiKey)
+        response.status(201).send(createApiKeyResponse)
     }
 }

@@ -8,7 +8,7 @@ export default class CreateApiKey{
         this.repository = repository
     }
 
-    public async Invoke(request:CreateApiKeyRequest):Promise<ApiKey>{
-        return await this.repository.createApiKey(request.application)
+    public async Invoke(application:string):Promise<ApiKey>{
+        return await this.repository.createApiKey(application)
     }
 }
