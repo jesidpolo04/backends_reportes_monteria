@@ -1,4 +1,5 @@
 import Report from "../Report"
+import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
 
 export default class CreateReportDto{
     public type: number
@@ -9,8 +10,9 @@ export default class CreateReportDto{
     public description: string
     public email: string
     public user_document: string
+    public images: MultipartFileContract[]
 
-    public setDtoFromRequest(request:any):void{
+    public constructor(request:any){
         this.type = request.type
         this.address = request.address
         this.reference = request.reference
