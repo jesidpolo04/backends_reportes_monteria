@@ -1,6 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { SimplePaginatorContract } from '@ioc:Adonis/Lucid/Database';
-import { MultipartFileContract } from '@ioc:Adonis/Core/BodyParser'
+import Drive from '@ioc:Adonis/Core/Drive'
+import { extname } from 'path'
 import CreateReportDto from '../Dtos/CreateReportDto';
 import ReportDto from '../Dtos/ReportDto';
 import Report from '../Report';
@@ -25,8 +26,7 @@ export default class ReportController {
         const paginator:SimplePaginatorContract<Report> = await getAllReports.Invoke(page, limit);
         const reports:Report[] = paginator.all();
         const reportsDto:ReportDto[] = reports.map(report =>{
-            let reportDto = new ReportDto()
-            reportDto.getDtoFromEntity(report)
+            let reportDto = new ReportDto(report)
             return reportDto
         })
         ctx.response.status(200).send({
@@ -38,10 +38,23 @@ export default class ReportController {
     public async create({request, response}: HttpContextContract){
         const validateRequest = await request.validate({schema: reportSchema})
         const createReportDto = new CreateReportDto(validateRequest);
-        const useCase:CreateReport = new CreateReport(this.reportsRepository);
-        const report:Report = await useCase.Invoke(createReportDto);
-        const reportDto:ReportDto = new ReportDto()
-        reportDto.getDtoFromEntity(report)
+        const useCase = new CreateReport(this.reportsRepository);
+        const report = await useCase.Invoke(createReportDto);
+        const reportDto = new ReportDto(report)
         response.status(201).send(reportDto)
+    }
+
+    public async showImage({ request, response }: HttpContextContract) {
+        const fileName = request.param('*').join('/')
+        const path = `./images/${fileName}`
+        try {
+            const { size } = await Drive.getStats(path)
+            response.type(extname(path))
+            response.header('content-length', size)
+            return response.stream(await Drive.getStream(path))
+        } catch(e){
+            console.log(e)
+            response.status(404).send(undefined)
+        }
     }
 }

@@ -6,3 +6,5 @@ Route.group(()=>{
     Route.get('/reports', `${controllerPath}.getAll`);
     Route.post('/reports', `${controllerPath}.create`);
 }).middleware(['apiKey'])
+
+Route.get('/reports/image/*', `${controllerPath}.showImage`)

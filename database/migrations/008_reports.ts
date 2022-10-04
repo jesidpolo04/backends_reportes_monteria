@@ -7,6 +7,7 @@ export default class extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table.integer('type').notNullable().unsigned().references('id').inTable('report_types')
+      table.boolean('attended')
       table.string('address')
       table.text('reference')
       table.decimal('latitude', 10, 8).notNullable()

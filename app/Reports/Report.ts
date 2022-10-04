@@ -12,6 +12,9 @@ export default class Report extends BaseModel {
     public type: number
 
     @column()
+    public attended: boolean
+
+    @column()
     public address: string
 
     @column()

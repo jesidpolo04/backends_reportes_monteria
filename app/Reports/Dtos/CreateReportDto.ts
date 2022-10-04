@@ -21,6 +21,7 @@ export default class CreateReportDto{
         this.description = request.description
         this.email = request.email 
         this.user_document = request.user_document
+        this.images = request.images
     }
 
     public getReportFromDto():Report{
