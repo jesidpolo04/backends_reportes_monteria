@@ -26,6 +26,9 @@ export default class ReportsRepository{
         if(parameters.type){
             query.where('type', '=', parameters.type);
         }
+        if(parameters.document){
+            query.where('user_document', '=', parameters.document)
+        }
         if(parameters.followsOrder){
             query.orderBy('follows', parameters.followsOrder);
         }
