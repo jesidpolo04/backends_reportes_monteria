@@ -16,12 +16,15 @@ export default class ReportsRepository{
     (parameters:SearchReportsParameters, page:number = 1, limit:number = 10)
     :Promise<ModelPaginatorContract<Report>>
     {
+        parameters.followsOrder
+        console.log('parametros', parameters)
         let query = Report.query()
-        if(parameters.type)
+        if(parameters.type){
             query.where('type', '=', parameters.type);
-        if(parameters.follows)
-            console.log(parameters.follows)
-            query.orderBy('follows', parameters.follows);
+        }
+        if(parameters.followsOrder){
+            query.orderBy('follows', parameters.followsOrder);
+        }
         return await query.paginate(page, limit)
     }
 

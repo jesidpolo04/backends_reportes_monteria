@@ -13,7 +13,7 @@ export class SearchReportsParameters{
         return this.type
     }
 
-    get follows(){
+    get followsOrder(){
         return this._followsOrder
     }
 }
