@@ -6,6 +6,10 @@ import { SearchReportsParameters } from "../SearchReportsParameters";
 
 export default class ReportsRepository{
 
+    public async getReportById(id:number):Promise<Report | undefined | null>{
+        return Report.find(id)
+    }
+
     public async getAllReports(page = 1, limit = 10):Promise<SimplePaginatorContract<Report>>{
         let allReports:SimplePaginatorContract<Report> = await Database.from('reports').paginate(page, limit)
         allReports.baseUrl('/reports')

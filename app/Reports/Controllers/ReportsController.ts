@@ -11,6 +11,7 @@ import GetAllReports from '../UseCases/GetAllReports';
 import { reportSchema } from '../Validators/ReportSchema';
 import { SearchReportsParameters } from '../SearchReportsParameters';
 import { SearchReports } from '../UseCases/SearchReports';
+import { GetReportById } from '../UseCases/GetReportById';
 
 export default class ReportController {
 
@@ -33,6 +34,22 @@ export default class ReportController {
             paginator: reportsPaginator.getMeta(),
             reports: reportsDtos
         })
+    }
+
+    public async get({request, response}: HttpContextContract){
+        const useCase = new GetReportById(this.reportsRepository)
+        const id = request.param('id')
+        console.log(id)
+        if(!id) response.status(400).send({
+            message: 'Not id present in the request',
+            status: 400
+        })
+        const report = await useCase.Invoke(id)
+        if(report){
+            response.status(200).send(new ReportDto(report))
+            return
+        }
+        response.status(404).send(undefined)
     }
 
     public async getAll(ctx: HttpContextContract){
