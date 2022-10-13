@@ -4,6 +4,7 @@ const controllerPath:string = 'Reports/Controllers/ReportsController';
 
 Route.group(()=>{
     Route.get('/reports', `${controllerPath}.getAll`);
+    Route.get('/reports/search', `${controllerPath}.search`);
     Route.post('/reports', `${controllerPath}.create`);
 }).middleware(['apiKey'])
 

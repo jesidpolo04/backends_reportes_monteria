@@ -9,6 +9,8 @@ import ReportsRepository from '../Repositories/ReportsRepository'
 import CreateReport from '../UseCases/CreateReport';
 import GetAllReports from '../UseCases/GetAllReports';
 import { reportSchema } from '../Validators/ReportSchema';
+import { SearchReportsParameters } from '../SearchReportsParameters';
+import { SearchReports } from '../UseCases/SearchReports';
 
 export default class ReportController {
 
@@ -16,6 +18,21 @@ export default class ReportController {
 
     public constructor(){
         this.reportsRepository = new ReportsRepository();
+    }
+
+    public async search({response, request}: HttpContextContract){
+        const query = request.qs() as SearchReportsParameters
+        console.log(query)
+        const useCase = new SearchReports(this.reportsRepository)
+        const reportsPaginator = await useCase.Invoke(query)
+        const reports = reportsPaginator.all()
+        const reportsDtos = reports.map(report => {
+            return new ReportDto(report)
+        })
+        response.status(200).send({
+            paginator: reportsPaginator.getMeta(),
+            reports: reportsDtos
+        })
     }
 
     public async getAll(ctx: HttpContextContract){

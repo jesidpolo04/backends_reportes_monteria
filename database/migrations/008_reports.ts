@@ -15,6 +15,7 @@ export default class extends BaseSchema {
       table.text('description')
       table.string('email')
       table.text('images')
+      table.integer('follows').defaultTo(0)
       table.string('user_document')
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

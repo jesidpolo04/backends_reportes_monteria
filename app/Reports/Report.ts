@@ -36,6 +36,9 @@ export default class Report extends BaseModel {
     public images: string
 
     @column()
+    public follows: number
+
+    @column()
     public userDocument: string
 
     @column.dateTime({ autoCreate: true, columnName: 'created_at' })
@@ -43,4 +46,13 @@ export default class Report extends BaseModel {
 
     @column.dateTime({ autoCreate: true, columnName: 'updated_at' })
     public updatedAt: DateTime
+
+    public hasBeenAttended():void{
+        this.attended = true
+    }
+
+    public addFollow():number{
+        this.follows ++;
+        return this.follows;
+    }
 }

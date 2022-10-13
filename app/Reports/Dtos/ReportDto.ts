@@ -11,6 +11,7 @@ export default class ReportDto{
     public longitude: number
     public description: string
     public email: string
+    public follows: number
     public images: string[] = []
 
     public constructor(report:Report){
@@ -22,6 +23,7 @@ export default class ReportDto{
         this.longitude = parseFloat(report.longitude.toString())
         this.description = report.description
         this.email = report.email
+        this.follows = report.follows
         this.images = JSON.parse(report.images)
     }
 }
