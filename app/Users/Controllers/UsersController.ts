@@ -6,32 +6,32 @@ import PasswordService from "../Services/PasswordService";
 import UserLoginUseCase from "../UseCases/User/UserLoginUseCase";
 import JWTAuthService from "App/Auth/JWT/JWTAuthService";
 import HTTP_RESPONSE_CODES from "App/Shared/HttpStatus";
+import { userSchema } from "../Validators/UserValidator";
 
 export default class UsersController{
 
     private repository:UsersRepository
-    private passwordService:PasswordService
     private jwtService:JWTAuthService
 
     public constructor(){
         this.repository = new UsersRepository()
-        this.passwordService = new PasswordService()
         this.jwtService = new JWTAuthService()
     }
 
     public async login(context:HttpContextContract){
         let request = context.request.all()
-        let useCase = new UserLoginUseCase(this.repository, this.passwordService, this.jwtService)
+        let useCase = new UserLoginUseCase(this.repository, this.jwtService)
         const token = await useCase.execute(request.user, request.password)
+        const response = new ApiResponse("Login successfully!", 201)
         context.response.status(HTTP_RESPONSE_CODES.OK).send({
-            message: "Inicio de sesión correcto",
+            message: response.message,
             token
         })
     }
 
     public async register(context:HttpContextContract){
-        let request = context.request.all()
-        let useCase = new RegisterUserUseCase(this.repository, this.passwordService)
+        let request = await context.request.validate({schema: userSchema})
+        let useCase = new RegisterUserUseCase(this.repository)
         await useCase.execute(
             request.name,
             request.last_name,
@@ -41,7 +41,7 @@ export default class UsersController{
             request.email,
             request.password
         )
-        let response = new ApiResponse("Registro exitoso!", 201)
+        let response = new ApiResponse("Register successfully!", 201)
         context.response.status(response.status).send(response)
     }
 }

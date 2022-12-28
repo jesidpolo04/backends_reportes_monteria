@@ -1,5 +1,3 @@
-import UsersRepository from 'App/Users/Repositories/UsersRepository';
-import PasswordService from 'App/Users/Services/PasswordService';
 import jwt, { JwtPayload, SignOptions } from 'jsonwebtoken';
 import UserTokenPayload from './UserTokenPayload';
 import Env from '@ioc:Adonis/Core/Env'
@@ -8,13 +6,9 @@ import InvalidTokenException from './Exceptions/InvalidTokenException';
 
 export default class JWTAuthService {
 
-    private usersRepository:UsersRepository
-    private passwordService:PasswordService
     private options:SignOptions
 
     public constructor(){
-        this.usersRepository = new UsersRepository()
-        this.passwordService = new PasswordService()
         this.options = {
             expiresIn: '1h'
         }

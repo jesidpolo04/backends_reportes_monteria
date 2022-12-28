@@ -4,33 +4,33 @@ import InvalidCredentialsException from "App/Users/Exceptions/InvalidCredentials
 import UsersRepository from "App/Users/Repositories/UsersRepository";
 import PasswordService from "App/Users/Services/PasswordService";
 import User from "App/Users/User";
+import Hash  from "@ioc:Adonis/Core/Hash"
 
 export default class UserLoginUseCase extends UseCase{
     private usersRepository:UsersRepository
-    private passwordService:PasswordService
     private jwtService:JWTAuthService
 
-    public constructor(usersRepository:UsersRepository, passwordService:PasswordService, jwtService:JWTAuthService){
+    public constructor(usersRepository:UsersRepository, jwtService:JWTAuthService){
         super()
         this.usersRepository = usersRepository
-        this.passwordService = passwordService
+
         this.jwtService = jwtService
     }
 
     public async execute(documentOrEmail:string, password:string):Promise<string>{
         let user = await this.tryWithDocument(documentOrEmail)
         if(user){
-            if(await this.passwordService.isEqual(password, user.password)){
+            if(await Hash.verify(user.password, password)){
                 return this.jwtService.generateToken(user)
             }
         }
         user = await this.tryWithEmail(documentOrEmail)
         if(user){
-            if(await this.passwordService.isEqual(password, user.password)){
+            if(await Hash.verify(user.password, password)){
                 return this.jwtService.generateToken(user)
             }
         }
-        throw new InvalidCredentialsException(`Usuario o contraseña incorrectos`)
+        throw new InvalidCredentialsException(`Invalid credentials`)
     }
 
     private async tryWithEmail(email):Promise<User | null>{

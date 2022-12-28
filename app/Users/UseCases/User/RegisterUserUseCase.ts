@@ -3,18 +3,15 @@ import UseCase from "App/Shared/UseCase";
 import DocumentAlreadyExistsException from "App/Users/Exceptions/DocumentAlreadyExistsException";
 import EmailAlreadyExistsException from "App/Users/Exceptions/EmailAlreadyExistsException";
 import UsersRepository from "App/Users/Repositories/UsersRepository";
-import PasswordService from "App/Users/Services/PasswordService";
 import User from "App/Users/User";
 
 export default class RegisterUserUseCase extends UseCase{
 
     private usersRepository:UsersRepository;
-    private passwordService:PasswordService;
     
-    public constructor(usersRepository:UsersRepository, passwordService:PasswordService){
+    public constructor(usersRepository:UsersRepository){
         super()
         this.usersRepository = usersRepository;
-        this.passwordService = passwordService;
     }
 
     public async execute(
@@ -36,7 +33,7 @@ export default class RegisterUserUseCase extends UseCase{
         user.document = document
         user.phone = phone
         user.email = email
-        user.password = await this.passwordService.hashPassword(password)
+        user.password = password
         user.rolId = Rol.ROLES.USER
 
         return await this.usersRepository.save(user);
