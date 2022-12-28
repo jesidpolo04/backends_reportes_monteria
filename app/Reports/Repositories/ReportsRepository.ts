@@ -1,6 +1,8 @@
 import Database, { SimplePaginatorContract } from "@ioc:Adonis/Lucid/Database";
 import { ModelPaginatorContract } from "@ioc:Adonis/Lucid/Orm";
 import { Query } from "accesscontrol";
+import NotFoundException from "App/Exceptions/NotFoundException";
+import ServerErrorException from "App/Exceptions/ServerErrorException";
 import Report from "../Report";
 import { SearchReportsParameters } from "../SearchReportsParameters";
 
@@ -37,5 +39,20 @@ export default class ReportsRepository{
 
     public async saveReport(report:Report):Promise<Report>{
        return report.save();
+    }
+
+    public async updateReportFollows(reportId:number, action:Traceable):Promise<number>{
+        const report = await Report.find(reportId)
+        if(!report){
+            throw new NotFoundException(`The report with the id ${reportId} doesn't exists in the database`, reportId)
+        }
+        if(action === "follow") report.follows ++;
+        else report.follows --;
+        try{
+            report.save()
+            return report.follows;
+        }catch(e){
+            throw new ServerErrorException()
+        }
     }
 }

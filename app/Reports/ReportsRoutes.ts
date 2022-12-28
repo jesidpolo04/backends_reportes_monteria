@@ -7,6 +7,8 @@ Route.group(()=>{
     Route.get('/reports', `${controllerPath}.getAll`);
     Route.get('/reports/search', `${controllerPath}.search`);
     Route.post('/reports', `${controllerPath}.create`);
+    Route.put('/report/:id/follow', `${controllerPath}.follow`)
+    Route.put('/report/:id/unfollow', `${controllerPath}.unfollow`)
 }).middleware(['apiKey'])
 
 Route.get('/reports/image/*', `${controllerPath}.showImage`)

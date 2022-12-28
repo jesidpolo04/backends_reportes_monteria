@@ -12,6 +12,9 @@ import { reportSchema } from '../Validators/ReportSchema';
 import { SearchReportsParameters } from '../SearchReportsParameters';
 import { SearchReports } from '../UseCases/SearchReports';
 import { GetReportById } from '../UseCases/GetReportById';
+import FollowAReport from '../UseCases/FollowAReport';
+import UnfollowAReport from '../UseCases/UnfollowAReport';
+import { Exception } from '@adonisjs/core/build/standalone';
 
 export default class ReportController {
 
@@ -76,6 +79,30 @@ export default class ReportController {
         const report = await useCase.Invoke(createReportDto);
         const reportDto = new ReportDto(report)
         response.status(201).send(reportDto)
+    }
+
+    public async follow({request, response}:HttpContextContract){
+        const reportId = request.param('id')
+        if(!reportId){
+            throw new Exception('Please, supply a report id', 400)
+        }
+        const useCase = new FollowAReport(this.reportsRepository)
+        const newFollows = await useCase.Invoke(reportId)
+        response.status(200).send({
+            follows: newFollows
+        })
+    }
+
+    public async unfollow({request, response}:HttpContextContract){
+        const reportId = request.param('id')
+        if(!reportId){
+            throw new Exception('Please, supply a report id', 400)
+        }
+        const useCase = new UnfollowAReport(this.reportsRepository)
+        const newFollows = await useCase.Invoke(reportId)
+        response.status(200).send({
+            follows: newFollows
+        })
     }
 
     public async showImage({ request, response }: HttpContextContract) {
