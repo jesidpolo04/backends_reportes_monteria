@@ -4,16 +4,17 @@ import GrantsRepository from '../Repositories/GrantsRepository'
 
 export default class AccessControlService{
 
-    private grantsRepository:GrantsRepository
+    private readonly grantsRepository:GrantsRepository
+    
     constructor(){
         this.grantsRepository = new GrantsRepository()
     }
 
     public async configAccesControl():Promise<AccessControl>{
-        let grants:Grant[] = await this.grantsRepository.getAllGrants()
-        let accessControl = new AccessControl()
-        for (let grant of grants) {
-            let access = accessControl.grant(grant.rol) 
+        const grants:Grant[] = await this.grantsRepository.getAllGrants()
+        const accessControl = new AccessControl()
+        for (const grant of grants) {
+            const access = accessControl.grant(grant.rol) 
             switch (grant.permission){
                 case 'read':
                     access.read(grant.resource)

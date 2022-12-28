@@ -1,10 +1,10 @@
 import User from "App/Users/User"
 
 export default class UserTokenPayload{
-    public name:string
-    public last_name:string
-    public document:string
-    public rol:number
+    private name:string
+    private last_name:string
+    private document:string
+    private rol:number
 
     public constructor(
         {name, last_name, document, rol}:{name:string, last_name:string, document:string, rol:number}
