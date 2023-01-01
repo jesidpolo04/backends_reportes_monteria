@@ -8,8 +8,8 @@ export default class extends BaseSchema {
       table.increments('id')
       table.integer('report').notNullable().unsigned().references('id').inTable('reports')
       table.string('user_document').references('document').inTable('users')
-      table.integer('interaction_type')
-      table.timestamp('created_at', { useTz: true })
+      table.integer('interaction_type').references('id').inTable('interaction_types')
+      table.timestamp('created_at', { useTz: true }).defaultTo(this.now())
     })
   }
 

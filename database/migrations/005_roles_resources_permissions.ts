@@ -9,8 +9,8 @@ export default class extends BaseSchema {
       table.integer('rol_id').unsigned().notNullable().references('id').inTable('roles')
       table.integer('permission_id').unsigned().notNullable().references('id').inTable('permissions')
       table.integer('resource_id').unsigned().notNullable().references('id').inTable('resources')
-      table.timestamp('created_at', { useTz: true })
-      table.timestamp('updated_at', { useTz: true })
+      table.timestamp('created_at', { useTz: true }).defaultTo(this.now())
+      table.timestamp('updated_at', { useTz: true }).defaultTo(this.now())
     })
   }
 

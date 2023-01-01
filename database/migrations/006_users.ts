@@ -14,8 +14,8 @@ export default class extends BaseSchema {
       table.string('phone')
       table.string('password')
       table.integer('rol').unsigned().notNullable().references('id').inTable('roles')
-      table.timestamp('created_at', { useTz: true })
-      table.timestamp('updated_at', { useTz: true })
+      table.timestamp('created_at', { useTz: true }).defaultTo(this.now())
+      table.timestamp('updated_at', { useTz: true }).defaultTo(this.now())
     })
   }
 
