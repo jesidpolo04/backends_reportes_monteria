@@ -4,17 +4,14 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class NotFoundException extends Exception {
 
-    public resourceId: string | number
-
-    constructor(message:string, resourceId:string | number){
-        super(message,  404 )
-        this.resourceId = resourceId
+    constructor(){
+        super("We can't found the requested resource",  404 )
     }
 
     public async handle(error: this, ctx: HttpContextContract) {
         ctx.response.status(error.status).send({
-            'message': error.message,
-            'resource_id': error.resourceId
+            message: error.message,
+            status: error.status
         })
       }
 }

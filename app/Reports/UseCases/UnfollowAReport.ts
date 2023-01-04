@@ -1,14 +1,24 @@
+import NotFoundException from "App/Exceptions/NotFoundException";
+import UnauthorizedException from "App/Exceptions/UnauthorizedException";
+import { InteractionsRepository } from "App/Interactions/Repositories/InteractionsRepository";
 import ReportsRepository from "../Repositories/ReportsRepository";
 
 export default class UnfollowAReport{
 
-    private reportsRepository:ReportsRepository
+    public constructor(
+        private reportsRepository:ReportsRepository,
+        private interactionsRepository: InteractionsRepository
+    ){}
 
-    public constructor(reportsRepository:ReportsRepository){
-        this.reportsRepository = reportsRepository;
-    }
-
-    public async Invoke(reportId:number):Promise<number>{
-        return this.reportsRepository.updateReportFollows(reportId, 'unfollow')
+    public async Invoke(interactionId:number, userDocument:string):Promise<number>{
+        const interaction = await this.interactionsRepository.getInteractionById(interactionId)
+        if(!interaction){
+            throw new NotFoundException()
+        }
+        if(userDocument !== interaction.userDocument){
+            throw new UnauthorizedException()
+        }
+        await this.interactionsRepository.deleteInteraction(interaction)
+        return this.reportsRepository.updateReportFollows(interaction.reportId, 'unfollow')
     }
 }

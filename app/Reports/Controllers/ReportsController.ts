@@ -15,13 +15,16 @@ import { GetReportById } from '../UseCases/GetReportById';
 import FollowAReport from '../UseCases/FollowAReport';
 import UnfollowAReport from '../UseCases/UnfollowAReport';
 import { Exception } from '@adonisjs/core/build/standalone';
+import { InteractionsRepository } from 'App/Interactions/Repositories/InteractionsRepository';
 
 export default class ReportController {
 
-    reportsRepository:ReportsRepository
+    private reportsRepository:ReportsRepository
+    private interactionsRepository:InteractionsRepository
 
     public constructor(){
         this.reportsRepository = new ReportsRepository();
+        this.interactionsRepository = new InteractionsRepository();
     }
 
     public async search({response, request}: HttpContextContract){
@@ -86,7 +89,7 @@ export default class ReportController {
         if(!reportId){
             throw new Exception('Please, supply a report id', 400)
         }
-        const useCase = new FollowAReport(this.reportsRepository)
+        const useCase = new FollowAReport(this.reportsRepository, this.interactionsRepository)
         const newFollows = await useCase.Invoke(reportId)
         response.status(200).send({
             follows: newFollows
@@ -98,7 +101,7 @@ export default class ReportController {
         if(!reportId){
             throw new Exception('Please, supply a report id', 400)
         }
-        const useCase = new UnfollowAReport(this.reportsRepository)
+        const useCase = new UnfollowAReport(this.reportsRepository, this.interactionsRepository)
         const newFollows = await useCase.Invoke(reportId)
         response.status(200).send({
             follows: newFollows
