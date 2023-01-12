@@ -41,5 +41,6 @@ Server.middleware.register([
 |
 */
 Server.middleware.registerNamed({
-  apiKey: () => import('App/Middleware/ApiKeyMiddleware')
+  apiKey: () => import('App/Middleware/ApiKeyMiddleware'),
+  jwt: () => import('App/Middleware/JWTMiddleware')
 })

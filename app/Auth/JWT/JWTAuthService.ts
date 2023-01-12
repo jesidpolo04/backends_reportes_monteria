@@ -21,7 +21,7 @@ export default class JWTAuthService {
             rol: user.rolId,
             document: user.document
         })
-        return await jwt.sign(tokenPayload.getPayload(), Env.get('JWT_SECRET') , this.options)
+        return await jwt.sign( tokenPayload.getPlainObjectPayload(), Env.get('JWT_SECRET') , this.options )
     }
 
     public async getPayload(token:string):Promise<UserTokenPayload>{

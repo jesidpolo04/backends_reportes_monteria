@@ -86,11 +86,12 @@ export default class ReportController {
 
     public async follow({request, response}:HttpContextContract){
         const reportId = request.param('id')
+        const { document } = await request.getJWTPayload()
         if(!reportId){
             throw new Exception('Please, supply a report id', 400)
         }
         const useCase = new FollowAReport(this.reportsRepository, this.interactionsRepository)
-        const newFollows = await useCase.Invoke(reportId)
+        const newFollows = await useCase.Invoke(reportId, document)
         response.status(200).send({
             follows: newFollows
         })
@@ -98,11 +99,12 @@ export default class ReportController {
 
     public async unfollow({request, response}:HttpContextContract){
         const reportId = request.param('id')
+        const { document } = await request.getJWTPayload()
         if(!reportId){
             throw new Exception('Please, supply a report id', 400)
         }
         const useCase = new UnfollowAReport(this.reportsRepository, this.interactionsRepository)
-        const newFollows = await useCase.Invoke(reportId)
+        const newFollows = await useCase.Invoke(reportId, document)
         response.status(200).send({
             follows: newFollows
         })

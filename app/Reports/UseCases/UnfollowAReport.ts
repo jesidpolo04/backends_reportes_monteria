@@ -1,7 +1,8 @@
-import NotFoundException from "App/Exceptions/NotFoundException";
-import UnauthorizedException from "App/Exceptions/UnauthorizedException";
 import { InteractionsRepository } from "App/Interactions/Repositories/InteractionsRepository";
 import ReportsRepository from "../Repositories/ReportsRepository";
+import { Interaction } from "App/Interactions/Interaction";
+import { Exception } from "@adonisjs/core/build/standalone";
+import { InteractionsDictionary } from "App/Interactions/InteractionsDictionary";
 
 export default class UnfollowAReport{
 
@@ -10,15 +11,22 @@ export default class UnfollowAReport{
         private interactionsRepository: InteractionsRepository
     ){}
 
-    public async Invoke(interactionId:number, userDocument:string):Promise<number>{
-        const interaction = await this.interactionsRepository.getInteractionById(interactionId)
-        if(!interaction){
-            throw new NotFoundException()
+    public async Invoke(reportId:number, userDocument:string):Promise<number>{
+        const follows = await this.getUserFollows(reportId, userDocument)
+        if(follows.length <= 0){
+            throw new Exception(`this user (${userDocument}) doesn't follow this report: ${reportId}`)
         }
-        if(userDocument !== interaction.userDocument){
-            throw new UnauthorizedException()
-        }
-        await this.interactionsRepository.deleteInteraction(interaction)
-        return this.reportsRepository.updateReportFollows(interaction.reportId, 'unfollow')
+        follows.forEach(async follow => {
+            await this.interactionsRepository.deleteInteraction(follow)    
+        });
+        return this.reportsRepository.updateReportFollows(reportId, 'unfollow')
+    }
+
+    private async getUserFollows(reportId, document):Promise<Interaction[]>{
+        return await this.interactionsRepository.getInteractions({
+            document, 
+            reportId, 
+            interactionTypeId: InteractionsDictionary.FEED
+        })
     }
 }

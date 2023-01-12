@@ -3,6 +3,22 @@ import { Interaction } from "../Interaction";
 
 export class InteractionsRepository{
 
+    public async getInteractions(
+        {document, interactionTypeId, reportId}:
+        {document?:string, interactionTypeId?:number, reportId?:number}):Promise<Interaction[]>{
+        const query = Interaction.query()
+        if(document){
+            query.where('userDocument', document)
+        }
+        if(interactionTypeId){
+            query.andWhere('interactionTypeId', interactionTypeId)
+        }
+        if(reportId){
+            query.andWhere('reportId', reportId)
+        }
+        return await query
+    }
+
     public async getInteractionById(id:number){
         try{
             return await Interaction.find(id)
