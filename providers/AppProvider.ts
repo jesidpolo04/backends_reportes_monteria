@@ -1,4 +1,3 @@
-import { Exception } from '@adonisjs/core/build/standalone'
 import { ApplicationContract } from '@ioc:Adonis/Core/Application'
 import JWTAuthService from 'App/Auth/JWT/JWTAuthService'
 
@@ -21,7 +20,9 @@ export default class AppProvider {
   }
 
   public async ready () {
-    
+    if (this.app.environment === 'web') {
+      await import('../start/socket')
+    }
   }
 
   public async shutdown () {
