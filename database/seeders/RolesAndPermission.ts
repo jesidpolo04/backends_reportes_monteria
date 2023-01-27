@@ -3,6 +3,8 @@ import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
 import Permission from 'App/Auth/Authorization/Permissions/Permission'
 import Resource from 'App/Auth/Authorization/Resources/Resource'
 import Rol from 'App/Auth/Authorization/Roles/Rol'
+import { USER_PERMISSIONS } from './RolesAndPermissions/UserPermissions'
+import { SUPER_PERMISSIONS } from './RolesAndPermissions/SuperPermissions'
 
 export default class extends BaseSeeder {
   public async run () {
@@ -76,139 +78,18 @@ export default class extends BaseSeeder {
         id: 6,
         resource: 'resources'
       },
+      {
+        id: 7,
+        resource: 'report_types'
+      }
     ])
   }
 
   private async rolesHasPermissions(){
-    await Database.table('roles_resources_permissions').insert(
-      [
-        {
-          'rol_id': 1,
-          'resource_id': 1,
-          'permission_id': 1
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 2,
-          'permission_id': 1
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 3,
-          'permission_id': 1
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 4,
-          'permission_id': 1
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 5,
-          'permission_id': 1
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 6,
-          'permission_id': 1
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 1,
-          'permission_id': 2
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 2,
-          'permission_id': 2
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 3,
-          'permission_id': 2
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 3,
-          'permission_id': 2
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 4,
-          'permission_id': 2
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 5,
-          'permission_id': 2
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 6,
-          'permission_id': 2
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 1,
-          'permission_id': 3
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 2,
-          'permission_id': 3
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 3,
-          'permission_id': 3
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 4,
-          'permission_id': 3
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 5,
-          'permission_id': 3
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 6,
-          'permission_id': 3
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 1,
-          'permission_id': 4
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 2,
-          'permission_id': 4
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 3,
-          'permission_id': 4
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 4,
-          'permission_id': 4
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 5,
-          'permission_id': 4
-        },
-        {
-          'rol_id': 1,
-          'resource_id': 6,
-          'permission_id': 4
-        }
-      ]
-    )
+    await Database.table('roles_resources_permissions').multiInsert([
+      ...USER_PERMISSIONS,
+      ...SUPER_PERMISSIONS
+    ])
 
   }
 }

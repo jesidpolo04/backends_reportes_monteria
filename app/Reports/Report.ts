@@ -5,7 +5,7 @@ export default class Report extends BaseModel {
 
     public static table = 'reports'
 
-    @column({isPrimary: true})
+    @column({ isPrimary: true })
     public id: number
 
     @column()
@@ -47,12 +47,38 @@ export default class Report extends BaseModel {
     @column.dateTime({ autoCreate: true, columnName: 'updated_at' })
     public updatedAt: DateTime
 
-    public hasBeenAttended():void{
+    public static instance(
+        type: number,
+        attended: boolean = false,
+        address: string,
+        userDocument: string,
+        latitude: number,
+        longitude: number,
+        description: string,
+        email: string,
+        images: string,
+        reference?: string,
+        ): Report {
+        const report = new Report()
+        report.type = type
+        report.attended = attended
+        report.address = address
+        report.userDocument = userDocument
+        report.latitude = latitude
+        report.longitude = longitude
+        report.description = description
+        report.email = email
+        report.images = images
+        reference ? report.reference = reference : null
+        return report
+    }
+
+    public hasBeenAttended(): void {
         this.attended = true
     }
 
-    public addFollow():number{
-        this.follows ++;
+    public addFollow(): number {
+        this.follows++;
         return this.follows;
     }
 }
