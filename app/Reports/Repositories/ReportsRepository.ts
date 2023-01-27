@@ -44,7 +44,7 @@ export default class ReportsRepository{
     public async updateReportFollows(reportId:number, action:Traceable):Promise<number>{
         const report = await Report.find(reportId)
         if(!report){
-            throw new NotFoundException(`The report with the id ${reportId} doesn't exists in the database`, reportId)
+            throw new NotFoundException()
         }
         if(action === "follow") report.follows ++;
         else report.follows --;

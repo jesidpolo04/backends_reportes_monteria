@@ -1,6 +1,7 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 const controllerPath:string = 'Reports/Controllers/ReportsController';
+const controllerSimulatePath:string = 'Reports/Controllers/ReportsSimulateController';
 
 Route.group(()=>{
     Route.get('/report/:id', `${controllerPath}.get`)
@@ -14,5 +15,10 @@ Route.group(()=>{
     }).middleware(['jwt'])
     
 }).middleware(['apiKey'])
+
+
+Route.group(()=>{
+    Route.post('/reports', `${controllerSimulatePath}.simulate`)
+}).prefix('/simulate')
 
 Route.get('/reports/image/*', `${controllerPath}.showImage`)
