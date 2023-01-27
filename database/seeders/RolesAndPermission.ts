@@ -3,8 +3,8 @@ import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
 import Permission from 'App/Auth/Authorization/Permissions/Permission'
 import Resource from 'App/Auth/Authorization/Resources/Resource'
 import Rol from 'App/Auth/Authorization/Roles/Rol'
-import { USER_PERMISSIONS } from './RolesAndPermissions/UserPermissions'
-import { SUPER_PERMISSIONS } from './RolesAndPermissions/SuperPermissions'
+import { USER_PERMISSIONS } from '../data/RolesAndPermissions/UserPermissions'
+import { SUPER_PERMISSIONS } from '../data/RolesAndPermissions/SuperPermissions'
 
 export default class extends BaseSeeder {
   public async run () {

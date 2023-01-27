@@ -9,7 +9,7 @@ export const SUPER_PERMISSIONS = [
         'resource_id': 2,
         'permission_id': 1
     },
-    {
+    { 
         'rol_id': 1,
         'resource_id': 3,
         'permission_id': 1
