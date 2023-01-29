@@ -11,9 +11,11 @@ export class LoginResponse{
 
     constructor(token:string, user:User){
         this.token = token
-        this.user.name = user.name
-        this.user.lastName = user.lastName
-        this.user.document = user.document
-        this.user.email = user.email
+        this.user = {
+            name: user.name,
+            lastName: user.lastName,
+            document: user.document,
+            email: user.email
+        }
     }
 }
