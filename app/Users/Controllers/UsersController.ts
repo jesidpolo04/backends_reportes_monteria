@@ -21,11 +21,12 @@ export default class UsersController{
     public async login(context:HttpContextContract){
         let request = context.request.all()
         let useCase = new UserLoginUseCase(this.repository, this.jwtService)
-        const token = await useCase.execute(request.user, request.password)
+        const loginResponse = await useCase.execute(request.user, request.password)
         const response = new ApiResponse("Login successfully!", 201)
         context.response.status(HTTP_RESPONSE_CODES.OK).send({
             message: response.message,
-            token
+            token: loginResponse.token,
+            user: loginResponse.user
         })
     }
 
