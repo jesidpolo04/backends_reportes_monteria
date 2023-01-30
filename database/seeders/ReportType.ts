@@ -6,14 +6,17 @@ export default class extends BaseSeeder {
     await ReportType.createMany([
       {
         id: 1,
+        active: true,
         type: 'Daño en alumbrado público'
       },
       {
         id: 2,
+        active: true,
         type: 'Acumulación de basura'
       },
       {
         id: 3,
+        active: true,
         type: 'Fallo de semáforo'
       }
     ])
