@@ -1,7 +1,7 @@
 import ReportType from "../ReportType";
 import ReportTypesRepository from "../Repositories/ReportTypesRepository";
 
-export default class GetAllReportTypes{
+export default class ChangeReportTypeState{
 
     private repository:ReportTypesRepository
 
@@ -9,7 +9,9 @@ export default class GetAllReportTypes{
         this.repository = repository;
     }
 
-    public async Invoke():Promise<ReportType[]>{
-        return this.repository.getAll();
+    public async Invoke(id: number):Promise<ReportType>{
+        const type = await this.repository.getById(id);
+        type.active = !type.active
+        return await type.save()
     }
 }

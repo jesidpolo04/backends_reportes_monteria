@@ -11,9 +11,19 @@ export default class ReportType extends BaseModel {
     @column()
     public type: string
 
+    @column()
+    public active: boolean
+
     @column.dateTime({ autoCreate: true, columnName: 'created_at' })
     public createdAt: DateTime
 
     @column.dateTime({ autoCreate: true, columnName: 'updated_at' })
     public updatedAt: DateTime
+    
+    public static instance(type:string, active:boolean = true){
+        const reportType = new ReportType()
+        reportType.type = type
+        reportType.active = active
+        return reportType
+    }
 }
