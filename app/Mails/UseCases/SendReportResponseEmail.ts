@@ -15,7 +15,7 @@ export class SendReportResponseEmail extends UseCase {
     async Invoke(target: EmailTarget, reportId: number, message: string) {
         let cc: string[] = [];
         const report = await this.getReport(reportId)
-        const type = await this.getReportType(reportId)
+        const type = await this.getReportType(report.type)
         const subject = `${type.type} ${report.address}`
         if (target == "all") cc = await this.getCc(reportId);
         await EmailService.sendEmailWithTemplate(
