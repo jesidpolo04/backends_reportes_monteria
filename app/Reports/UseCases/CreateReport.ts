@@ -1,8 +1,11 @@
+import Ws from "App/Socket/Services/Ws";
 import CreateReportDto from "../Dtos/CreateReportDto";
 import Report from "../Report";
 import ReportsRepository from "../Repositories/ReportsRepository";
 import Env from "@ioc:Adonis/Core/Env"
 import { v4 as uuidv4 } from 'uuid';
+import { REPORTS_EVENTS } from "../ReportEvents";
+import ReportDto from "../Dtos/ReportDto";
 
 export default class CreateReport{
     private reportsRepository:ReportsRepository
@@ -24,6 +27,8 @@ export default class CreateReport{
             imagesUrls.push(`${this.hostUrl}${this.showImageEndpoint}${name}`)
         }
         report.images = JSON.stringify(imagesUrls) 
-        return await this.reportsRepository.saveReport(report);
+        const savedReport = await this.reportsRepository.saveReport(report);
+        Ws.io.emit(REPORTS_EVENTS.CREATED, new ReportDto(savedReport))
+        return savedReport
     }
 }
