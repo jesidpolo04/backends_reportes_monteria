@@ -8,6 +8,7 @@ export default class ApiKeyMiddleware {
     this.service = new ApiKeysService()
   }
   public async handle(context: HttpContextContract, next: () => Promise<void>) {
+    console.log(context.request.headers())
     const HEADERAPIKEY = context.request.header('API-KEY')
     if(!HEADERAPIKEY || HEADERAPIKEY == ""){
       throw new Exception("Unauthorized, non set api key", 401)
