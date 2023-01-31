@@ -16,6 +16,7 @@ import FollowAReport from '../UseCases/FollowAReport';
 import UnfollowAReport from '../UseCases/UnfollowAReport';
 import { Exception } from '@adonisjs/core/build/standalone';
 import { InteractionsRepository } from 'App/Interactions/Repositories/InteractionsRepository';
+import { ModelPaginatorContract } from '@ioc:Adonis/Lucid/Orm';
 
 export default class ReportController {
 
@@ -29,7 +30,6 @@ export default class ReportController {
 
     public async search({response, request}: HttpContextContract){
         const query = request.qs() as SearchReportsParameters
-        console.log(query)
         const useCase = new SearchReports(this.reportsRepository)
         const reportsPaginator = await useCase.Invoke(query)
         const reports = reportsPaginator.all()
@@ -63,7 +63,7 @@ export default class ReportController {
         const page = queryParams["page"]
         const limit = queryParams["limit"]
         const getAllReports:GetAllReports = new GetAllReports(this.reportsRepository);
-        const paginator:SimplePaginatorContract<Report> = await getAllReports.Invoke(page, limit);
+        const paginator:ModelPaginatorContract<Report> = await getAllReports.Invoke(page, limit);
         const reports:Report[] = paginator.all();
         const reportsDto:ReportDto[] = reports.map(report =>{
             let reportDto = new ReportDto(report)
