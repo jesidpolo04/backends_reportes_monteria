@@ -15,6 +15,7 @@ export default class ReportDto{
     public document: string
     public follows: number
     public images: string[] = []
+    public date: string
 
     public constructor(report:Report){
         this.id = report.id
@@ -29,5 +30,6 @@ export default class ReportDto{
         this.document = report.userDocument
         this.follows = report.follows
         this.images = JSON.parse(report.images)
+        this.date = report.createdAt.toFormat('dd/MM/yyyy hh:mm')
     }
 }
