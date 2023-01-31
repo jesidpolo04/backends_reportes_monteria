@@ -10,7 +10,7 @@ export default class JWTAuthService {
 
     public constructor(){
         this.options = {
-            expiresIn: '1h'
+            expiresIn: '24h'
         }
     }
 
